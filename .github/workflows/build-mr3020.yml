@@ -1,12 +1,22 @@
-name: Build MR3020
+name: Build MR3020 16MB
 on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@main
+
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
 
       - name: Install Dependencies
         env:
@@ -41,7 +51,7 @@ jobs:
         run: |
           cd openwrt
           make download -j8
-          make -j$(nproc) || make -j1 V=s
+          make -j1 V=s || make -j1 V=s
 
       - name: Upload
         uses: actions/upload-artifact@main
