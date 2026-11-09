@@ -1,5 +1,4 @@
-
-name: Build MR3020 16MB
+name: Build MR3020
 on:
   workflow_dispatch:
 jobs:
