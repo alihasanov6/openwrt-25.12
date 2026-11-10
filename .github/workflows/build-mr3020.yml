@@ -38,22 +38,23 @@ jobs:
           sed -i 's/reg = <0x020000 0x3c0000>;/reg = <0x020000 0xfd0000>;/' target/linux/ath79/dts/ar9331_tplink_tl-mr3020-v1.dts
           sed -i '/define Device\/tplink_tl-mr3020-v1/,/endef/ s/\$(Device\/tplink-4mlzma)/$(Device\/tplink-16mlzma)/' target/linux/ath79/image/tiny-tp-link.mk
 
-     - name: Config
-  run: |
-    cd openwrt
-    echo "CONFIG_TARGET_ath79=y" >> .config
-    echo "CONFIG_TARGET_ath79_generic=y" >> .config
-    echo "CONFIG_TARGET_ath79_generic_DEVICE_tplink_tl-mr3020-v1=y" >> .config
-    echo "CONFIG_TARGET_MULTI_PROFILE=y" >> .config
-    echo "CONFIG_TARGET_PER_DEVICE_ROOTFS=y" >> .config
-    echo "CONFIG_PACKAGE_luci=y" >> .config
-    make defconfig
+      - name: Config
+        run: |
+          cd openwrt
+          echo "CONFIG_TARGET_ath79=y" >> .config
+          echo "CONFIG_TARGET_ath79_generic=y" >> .config
+          echo "CONFIG_TARGET_ath79_generic_DEVICE_tplink_tl-mr3020-v1=y" >> .config
+          echo "CONFIG_TARGET_MULTI_PROFILE=y" >> .config
+          echo "CONFIG_TARGET_PER_DEVICE_ROOTFS=y" >> .config
+          echo "CONFIG_PACKAGE_luci=y" >> .config
+          make defconfig
 
       - name: Compile
         run: |
           cd openwrt
           make download -j8
           make -j1 V=s || make -j1 V=s
+          ls -la bin/targets/ath79/generic/
 
       - name: Upload
         uses: actions/upload-artifact@main
