@@ -54,10 +54,15 @@ jobs:
           cd openwrt
           make download -j8
           make -j1 V=s || make -j1 V=s
-          ls -la bin/targets/ath79/generic/
+
+      - name: Find Files
+        run: |
+          cd openwrt
+          echo "=== LIST OF BUILT FILES ==="
+          find bin/targets/ -type f -name "*.bin" | tee /tmp/file_list.txt
 
       - name: Upload
         uses: actions/upload-artifact@main
         with:
           name: OpenWrt_MR3020
-          path: openwrt/bin/targets/ath79/generic/
+          path: openwrt/bin/targets/
